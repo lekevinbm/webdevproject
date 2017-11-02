@@ -15,12 +15,15 @@ class CreatePicturesTable extends Migration
     {
         Schema::create('pictures', function (Blueprint $table) {
             $table->increments('picture_id');
+            $table->string('caption');
             $table->string('serialNumberOfGame');
             $table->string('path');
             $table->integer('participent_id')->unsigned();
             $table->timestamps();
             
-            $table->foreign('participent_id')->references('id')->on('users');
+            $table->foreign('participent_id')->references('id')
+                ->on('users')
+                ->onDelete('cascade');
         });
     }
 

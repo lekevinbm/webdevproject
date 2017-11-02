@@ -4,7 +4,7 @@
         <div class="flex-center position-ref full-height">
             <div class="sellBike">
                 <div class="panel-body">
-                    <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/storeNewBike" >
+                    <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/registerNewParticipant" >
                         {{ csrf_field() }}
 
                         <div class="form-group{{ $errors->has('firstName') ? ' has-error' : '' }}">
@@ -94,10 +94,22 @@
                         <div class="form-group{{ $errors->has('image') ? ' has-error' : '' }}">
                             <label for="image" class="col-md-4 control-label">Voeg je #FIFAISBAE-afbeelding toe*</label>
                             <div class="col-md-6">
-                                <input type="file" name="images" /><br/>
+                                <input type="file" name="image" /><br/>
                                 @if ($errors->has('image'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('image') }}</strong>
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="form-group{{ $errors->has('caption') ? ' has-error' : '' }}">
+                            <label for="caption" class="col-md-4 control-label">Schrijf een originele caption*</label>
+                            <div class="col-md-6">
+                                <textarea id="caption" type="text" class="form-control" name="caption" required>{{ old('caption') }}</textarea>
+                                @if ($errors->has('caption'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('caption') }}</strong>
                                     </span>
                                 @endif
                             </div>

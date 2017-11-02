@@ -26,10 +26,7 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                         Rebicycle
-                        <!-- {{ config('app.name', 'Laravel') }} -->
-                    </a>
+                    <a class="navbar-brand" href="{{ url('/') }}">FIFA 18 Wedstrijd</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
@@ -37,11 +34,19 @@
                     <ul class="nav navbar-nav"></ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/bikes">aanbod</a></li>
-                         @guest
-                            <li class="dropdown">
+                    <li><a href="/allPictures">Alle inzendingen</a></li>
+                    <li><a href="/newParticipant">Een foto Inzenden</a></li>
+
+                    
+                    
+                    </span>
+
+                        <!-- Authentication Links -->
+                        <!-- <li><a href="/"><i class="fal fa-shopping-cart"></i> winkelwagen</a></li> -->
+                        @guest
+                        <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    <i class="fal fa-user"></i> aanmelden <span class="caret"></span>
+                                    <i class="fal fa-user"></i>Admin <span class="caret"></span>
                                 </a>
 
                                 <ul class="dropdown-menu" role="menu">
@@ -53,13 +58,13 @@
                         @else
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
+                                    {{ Auth::user()->firstName }} {{ Auth::user()->lastName }} <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
+                                    <li><a class="btn" href="/allParticipants">Deelnemers beheren</a></li>                                </li>
+                                    <li><a class="btn" href="{{ route('logout') }}">Uitloggen</a></li>
                                     <li>
-                                        <a class="btn" href="../myBikes">Alle Deelnemers</a>
-                                    <li>
-                                        <a class="btn" href="{{ route('logout') }}">Logout</a>
+                                        
                                     </li>
                                 </ul>
                             </li>
@@ -73,3 +78,5 @@
         </div>
     </body>
 </html>
+<script src="{{ asset('js/bootstrap.js') }}"></script>
+<script src="{{ asset('js/app.js') }}"></script>

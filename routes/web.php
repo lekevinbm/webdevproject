@@ -11,6 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('participate');
-});
+Route::get('/','MainController@index');
+Route::get('/newParticipant','MainController@openNewParticipant');
+Route::post('/registerNewParticipant','MainController@registerNewParticipant');
+Route::get('/openSendPicture/{id}','MainController@openSendPicture');
+Route::get('/deleteAVote/{id}','MainController@deleteAVote');
+Route::get('/voteForPicture/{id}','MainController@voteForPicture');
+Route::get('/allParticipants/','MainController@allParticipants');
+
+Auth::routes();
