@@ -16,4 +16,11 @@ class Picture extends Model
     	->select('pictures.*','users.firstName','users.lastName')
     	->get();
     }
+
+    public function getAllPictures(){
+    	return DB::table('pictures')
+    	->join('users','users.id','=','pictures.participent_id')
+    	->select('pictures.*','users.firstName','users.lastName')
+    	->get();
+    }
 }

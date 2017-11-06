@@ -13,10 +13,24 @@
 
 Route::get('/','MainController@index');
 Route::get('/newParticipant','MainController@openNewParticipant');
+Route::post('/postNewParticipantPage1Data','MainController@postNewParticipantPage1Data');
+Route::get('/openNewParticipantPage2','MainController@openNewParticipantPage2');
 Route::post('/registerNewParticipant','MainController@registerNewParticipant');
 Route::get('/openSendPicture/{id}','MainController@openSendPicture');
-Route::get('/deleteAVote/{id}','MainController@deleteAVote');
-Route::get('/voteForPicture/{id}','MainController@voteForPicture');
-Route::get('/allParticipants/','MainController@allParticipants');
+Route::get('/openAllPictures','MainController@openAllPictures');
+
+
+Route::group(['middleware' => 'auth'], function () {
+	Route::get('/deleteAVote/{id}','MainController@deleteAVote');
+	Route::get('/voteForPicture/{id}','MainController@voteForPicture');
+	
+	
+});
+
+Route::group(['middleware' => 'admin'], function () {
+	Route::get('/allParticipants/','MainController@allParticipants');
+});
+
 
 Auth::routes();
+Route::get('/logout', 'Auth\LoginController@logout');

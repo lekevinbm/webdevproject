@@ -17,6 +17,7 @@ class CreateVotesTable extends Migration
             $table->increments('vote_id');
             $table->integer('user_id')->unsigned();
             $table->integer('picture_id')->unsigned();
+            $table->boolean('wasVoted');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')

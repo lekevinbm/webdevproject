@@ -27,7 +27,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -63,13 +63,16 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $valueOfIsAdmin = True;
+        $valueOfIsAdmin = False;
+        $valueOfIsParticipant = False;
+
         return User::create([
             'firstName' => $data['firstName'],
             'lastName' => $data['lastName'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
             'isAdmin' => $valueOfIsAdmin,
+            'isParticipant' => $valueOfIsParticipant,
         ]);
     }
 }

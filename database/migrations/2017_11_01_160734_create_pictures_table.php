@@ -18,6 +18,7 @@ class CreatePicturesTable extends Migration
             $table->string('caption');
             $table->string('serialNumberOfGame');
             $table->string('path');
+            $table->integer('numberOfVotes');
             $table->integer('participent_id')->unsigned();
             $table->timestamps();
             

@@ -1,34 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <table class="table table-hover">
-    <thead>
-      <tr>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>email</th>
-        <th>adres</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>John</td>
-        <td>Doe</td>
-        <td>john@example.com</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>Mary</td>
-        <td>Moe</td>
-        <td>mary@example.com</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>July</td>
-        <td>Dooley</td>
-        <td>july@example.com</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="row">
+        <div class="col-md-3">
+            <img style="width: 100%" src="">
+        </div>
+        <div class="col-md-5">
+        
+    </div>
 @endsection

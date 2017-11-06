@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use DB;
 
 class User extends Authenticatable
 {
@@ -15,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'firstName','lastName', 'email','streetAndNumber','zipcode','placeOfResidence','password','isAdmin'
+        'firstName','lastName', 'email','streetAndNumber','zipcode','placeOfResidence','password','isAdmin','isParticipant'
     ];
 
     /**
@@ -26,4 +27,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function getUserWithEmail($email){
+
+        return DB::table('users')
+        ->where('email','=',$email)
+        ->get();
+    }
 }

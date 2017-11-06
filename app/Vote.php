@@ -23,4 +23,11 @@ class Vote extends Model
     	->where('user_id','=',$user_id)
         ->delete();
     }
+
+    public function  countNumberOfVotes($picture_id)
+    {
+    	return DB::table('votes')
+                ->where('picture_id', '=',$picture_id)
+                ->count();
+    }
 }

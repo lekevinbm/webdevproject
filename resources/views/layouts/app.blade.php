@@ -9,7 +9,7 @@
 
         <!-- Fonts -->
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet" >
         
     </head>
     <body>
@@ -34,41 +34,36 @@
                     <ul class="nav navbar-nav"></ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/allPictures">Alle inzendingen</a></li>
+                    <li><a href="/openAllPictures">Alle inzendingen</a></li>
                     <li><a href="/newParticipant">Een foto Inzenden</a></li>
-
+                    @guest
+                        <li><a href="/login"></i>Aanmelden</a></li>
+                    @endguest
                     
                     
                     </span>
 
                         <!-- Authentication Links -->
-                        <!-- <li><a href="/"><i class="fal fa-shopping-cart"></i> winkelwagen</a></li> -->
-                        @guest
-                        <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                                    <i class="fal fa-user"></i>Admin <span class="caret"></span>
-                                </a>
-
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        <a href="/login"></i>Aanmelden</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        @else
+                        
+                        @auth
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->firstName }} {{ Auth::user()->lastName }} <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
-                                    <li><a class="btn" href="/allParticipants">Deelnemers beheren</a></li>                                </li>
+                                    @if(Auth::user()->isAdmin)
+                                        <li><a class="btn" href="/allParticipants">Deelnemers beheren</a></li>                                </li>
+                                    @endif
+                                    @if(Auth::user()->isParticipant)
+                                        <li><a class="btn" href="/openPicturesParticipent">Inzending bekijken</a></li>                                </li>
+                                    @endif
                                     <li><a class="btn" href="{{ route('logout') }}">Uitloggen</a></li>
                                     <li>
                                         
                                     </li>
                                 </ul>
                             </li>
-                        @endguest
+                        @endauth
                     </ul>
                 </div>
             </div>
