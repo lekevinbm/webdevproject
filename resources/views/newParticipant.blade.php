@@ -2,7 +2,7 @@
 
 @section('content')
         <div class="flex-center position-ref full-height">
-            <div class="sellBike">
+                <h4>Een foto inzenden</h4>
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/postNewParticipantPage1Data" >
                         {{ csrf_field() }}
@@ -74,6 +74,5 @@
                         </div>
                     </form>
                 </div>
-            </div>
         </div>
 @endsection

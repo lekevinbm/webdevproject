@@ -24,8 +24,10 @@ class CreateUsersTable extends Migration
             $table->boolean('isAdmin');
             $table->boolean('isParticipant');
             $table->string('password')->nullable();
+            $table->string('ipAddress')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

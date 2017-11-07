@@ -3,12 +3,14 @@
 @section('content')
     <div class="row">
         <div class="col-md-5">
+            
             <img style="width: 100%" src="{{ asset($pictureToShow->path)  }}">
         </div>
         <div class="col-md-5">
-        <p>{{$pictureToShow->caption}}</p>
-        <h4>From: {{$pictureToShow->firstName}} {{$pictureToShow->lastName}}</h5>
-        <p>Aantal stemmen: {{$numberOfVotes}}</p>
+        <h5>Jouw inzending:</h5>
+        <p class="caption">{{$pictureToShow->caption}}</p>
+        <h4>Van: {{$pictureToShow->firstName}} {{$pictureToShow->lastName}}</h5>
+        <p class="votes">Aantal stemmen: {{$numberOfVotes}}</p>
             @if ( $hasAlreadyVoted )
                  <a class="btn btn-danger" href="/deleteAVote/{{$pictureToShow->picture_id}}">Stemming ongedaan maken</a>
             @else

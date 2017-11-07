@@ -20,15 +20,22 @@ Route::get('/openSendPicture/{id}','MainController@openSendPicture');
 Route::get('/openAllPictures','MainController@openAllPictures');
 
 
+
 Route::group(['middleware' => 'auth'], function () {
 	Route::get('/deleteAVote/{id}','MainController@deleteAVote');
 	Route::get('/voteForPicture/{id}','MainController@voteForPicture');
+	Route::get('/openPicturesParticipent','MainController@openPicturesParticipent');
 	
 	
 });
 
 Route::group(['middleware' => 'admin'], function () {
 	Route::get('/allParticipants/','MainController@allParticipants');
+	Route::get('/deleteAUser/{id}','MainController@deleteAUser');
+	Route::get('/setUserAsAdmin/{id}','MainController@setUserAsAdmin');
+	Route::get('/setAdminAsNormalUser/{id}','MainController@setAdminAsNormalUser');
+	
+	
 });
 
 

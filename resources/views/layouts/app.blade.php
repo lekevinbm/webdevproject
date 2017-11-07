@@ -5,15 +5,16 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>FIFA 18 Wedstrijd</title>
+        <title>#FIFAISBAE Fotowedstrijd</title>
 
         <!-- Fonts -->
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link href="{{ asset('css/style.css') }}" rel="stylesheet" >
+       <link href="https://fonts.googleapis.com/css?family=Muli:400,700,800,900" rel="stylesheet">
         
     </head>
     <body>
-        <nav class="navbar navbar-default navbar-static-top">
+        <nav id="nav" class="navbar-default navbar-static-top">
             <div class="container">
                 <div class="navbar-header">
 
@@ -26,7 +27,7 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">FIFA 18 Wedstrijd</a>
+                    <a class="navbar-brand" href="{{ url('/') }}">#FIFAISBAE</a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
@@ -52,10 +53,10 @@
                                 </a>
                                 <ul class="dropdown-menu" role="menu">
                                     @if(Auth::user()->isAdmin)
-                                        <li><a class="btn" href="/allParticipants">Deelnemers beheren</a></li>                                </li>
+                                        <li><a class="btn" href="/allParticipants">Gebruikers beheren</a></li>                                </li>
                                     @endif
                                     @if(Auth::user()->isParticipant)
-                                        <li><a class="btn" href="/openPicturesParticipent">Inzending bekijken</a></li>                                </li>
+                                        <li><a class="btn" href="/openPicturesParticipent">Mijn inzendingen</a></li>                                </li>
                                     @endif
                                     <li><a class="btn" href="{{ route('logout') }}">Uitloggen</a></li>
                                     <li>
@@ -68,9 +69,19 @@
                 </div>
             </div>
         </nav>
+         <div id="header-div">
+            <a href="{{ url('/') }}"><img id="header-image" src="{{ asset('img/Ronaldo-header.png') }}"></a>
+        </div>
         <div class="content container">
         @yield('content')
         </div>
+        <footer>
+            <div class="container">
+                <div class="col-md-9">
+                    <h6>De #FIFAISBAE fotowedstrijd is een initiatief van <a href="https://www.easports.com/fifa/">EA Sports</a>.</h6>
+                </div>
+            </div>
+        </footer>
     </body>
 </html>
 <script src="{{ asset('js/bootstrap.js') }}"></script>

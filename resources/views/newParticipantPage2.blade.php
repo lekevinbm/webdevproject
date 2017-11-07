@@ -2,13 +2,12 @@
 
 @section('content')
         <div class="flex-center position-ref full-height">
-            @guest
-                <p>Je hebt een account nodig om een afbeelding in te zenden.</p>
-            @else
-                <p>We hebben nog enkele gegevens nodig.</p>
-            @endguest
-            <div class="">
                 <div class="panel-body">
+                @guest
+                    <p>Je hebt een account nodig om een afbeelding in te zenden.</p>
+                @else
+                    <p>We hebben nog enkele gegevens nodig.</p>
+                @endguest
                     <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/registerNewParticipant" >
                         {{ csrf_field() }}
 
@@ -130,6 +129,5 @@
                         </div>
                     </form>
                 </div>
-            </div>
         </div>
 @endsection

@@ -1,4 +1,94 @@
+body{
+	font-family: 'Muli', sans-serif;
+	min-height: 100vh;
+
+	
+}
+
+#nav{
+	background-color:#000;
+	color: white;
+}
+
+#nav>a{
+	color: white;
+}
+
 .contestPicture{
 	height: 65vh;
 	margin: 3% 0;
+}
+
+#header-div{
+	margin-bottom: 3%;
+}
+
+#header-image{
+	width: 100%;
+	height: 100%
+}
+
+h4{
+	margin: 25px 0;
+	font-weight: 900;
+	font-size: 30px;
+}
+h5{
+	font-weight: bold;
+	font-size: 26px;
+}
+
+#home-text{
+	padding: 35px 0;
+	font-size: 24px;
+	height: 100%;
+}
+#home-text>ul{
+	margin-bottom: 10%;
+}
+
+#home-text>h5{
+	margin-top: 5%;
+}
+
+.home-img{
+	width: 100%;
+	margin: auto;
+}
+
+.button{
+	background-color: #20222f;
+	color: white;
+    padding: 2% 15%;
+    font-size: 1.5em;
+	font-weight: bold;
+	margin-left: 15%;
+	color: #ffcd00;
+}
+
+.button:hover{
+	color: #ffF;
+	text-decoration: none;
+}
+
+.pictureInfo{
+	width: 90%;
+}
+
+.caption{
+	font-style: italic;
+	font-size: 1.5em 
+}
+.participant{
+	font-weight: bold;
+}
+.votes{
+	font-size: 1.5em 
+}
+
+footer{
+	background-color: #000;
+	color: #fff;
+	margin-top: 5%;
+	padding: 2% 0;
 }

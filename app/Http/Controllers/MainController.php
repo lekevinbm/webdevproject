@@ -29,8 +29,11 @@ class MainController extends Controller
     }
 
     public function openAllPictures(){
-        $picture = new Picture;
-        $allPictures = $picture->getAllPictures();
+
+        $allPictures = Picture::join('users','users.id','=','pictures.participent_id')
+        ->select('pictures.*','users.firstName','users.lastName')
+        ->get();
+
         return view('allPictures',[
             'allPictures' => $allPictures,
             ]);
@@ -109,9 +112,6 @@ class MainController extends Controller
         
     }
 
-
-
-
     public function registerNewParticipant(Request $request)
     {
         $user = new User;
@@ -126,7 +126,7 @@ class MainController extends Controller
             ]);
 
         } else{
-            $hasUserAnAccount = True;
+            $hasUserAnAccount = False;
 
             $validator = Validator::make($request->all(), [
               'firstName' => 'required',
@@ -152,6 +152,7 @@ class MainController extends Controller
             $user->placeOfResidence = $request->placeOfResidence;
             $user->isAdmin = False;
             $user->isParticipant = True;
+            $user->ipAddress = $request->ip();
             $user->save();
             $user_id = $user->id;
 
@@ -166,6 +167,7 @@ class MainController extends Controller
             Auth::user()->zipcode = $request->zipcode;
             Auth::user()->placeOfResidence = $request->placeOfResidence;
             Auth::user()->isParticipant = True;
+            Auth::user()->ipAddress = $request->ip();
             Auth::user()->save();
 
             $picture_id = $this->sendPictureAndGiveId($participantData, Auth::id());
@@ -217,8 +219,23 @@ class MainController extends Controller
         $picture->serialNumberOfGame = $participantData['serialNumberOfGame'];
         $picture->numberOfVotes = 0;
         $picture->save();
-        return $picture_id = $picture->id;
+        return $picture_id = $picture->picture_id;
 
+    }
+
+    public function openPicturesParticipent(){
+        $user_id = Auth::id();
+        $allPictures = Picture::join('users','users.id','=','pictures.participent_id')
+        ->where('participent_id','=',$user_id)
+        ->select('pictures.*','users.firstName','users.lastName')
+        ->get();
+
+
+
+        return view('openPictureParticipent',
+            [
+            'allPictures' => $allPictures,
+            ]);
     }
 
     public function voteForPicture($picture_id){
@@ -234,11 +251,13 @@ class MainController extends Controller
             $vote->wasVoted = True;
             $vote->save();
 
-            $pictureToEdit = $picture->getAPicture($picture_id)->first();
-            $pictureToEdit->numberOfVotes = $pictureToEdit->numberOfVotes + 1;
+            $pictureToEdit = $picture::find($picture_id);
+            $originalNumberOfVotes = $pictureToEdit->numberOfVotes;
+            $pictureToEdit->numberOfVotes = $originalNumberOfVotes + 1;
+            $pictureToEdit->save();
         }
 
-        return redirect('/openSendPicture/'.$picture_id);
+        return Redirect::back();
     }
 
     public function deleteAVote($picture_id){
@@ -252,14 +271,43 @@ class MainController extends Controller
         if(!$voteToCheck->isEmpty()){
             $vote->deleteAVote($picture_id, $user_id);
 
-            $pictureToEdit = $picture->getAPicture($picture_id)->first();
-            $pictureToEdit->numberOfVotes = $pictureToEdit->numberOfVotes - 1;
+            $pictureToEdit = $picture::find($picture_id);
+            $originalNumberOfVotes = $pictureToEdit->numberOfVotes;
+            $pictureToEdit->numberOfVotes = $originalNumberOfVotes - 1;
+            $pictureToEdit->save();
         }   
         
-        return redirect('/openSendPicture/'.$picture_id);
+        return Redirect::back();
     }
 
     public function allParticipants(){
-        return view('allParticipants');
+
+        $allUsers =  User::all();
+        
+        return view('allParticipants',[
+            'allUsers' => $allUsers
+            ]);
     }
+
+    public function deleteAUser($user_id){
+        $user = User::find($user_id);    
+        $user->delete();
+        return Redirect::back();
+    }
+
+    public function setUserAsAdmin($user_id){
+        $user = User::find($user_id);
+        $user->isAdmin = True;
+        $user->save();
+        return Redirect::back();
+    }
+
+    public function setAdminAsNormalUser($user_id){
+        $user = User::find($user_id);
+        $user->isAdmin = False;
+        $user->save();
+        return Redirect::back();
+    }
+
+
 }
