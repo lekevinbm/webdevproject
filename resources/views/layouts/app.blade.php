@@ -8,9 +8,10 @@
         <title>#FIFAISBAE Fotowedstrijd</title>
 
         <!-- Fonts -->
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">        
+        <link href="https://fonts.googleapis.com/css?family=Muli:400,700,800,900" rel="stylesheet">
         <link href="{{ asset('css/style.css') }}" rel="stylesheet" >
-       <link href="https://fonts.googleapis.com/css?family=Muli:400,700,800,900" rel="stylesheet">
         
     </head>
     <body>
@@ -70,7 +71,7 @@
             </div>
         </nav>
          <div id="header-div">
-            <a href="{{ url('/') }}"><img id="header-image" src="{{ asset('img/Ronaldo-header.png') }}"></a>
+            <img id="header-image" src="{{ asset('img/Ronaldo-header.png') }}">
         </div>
         <div class="content container">
         @yield('content')

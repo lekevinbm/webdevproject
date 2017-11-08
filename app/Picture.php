@@ -37,6 +37,14 @@ class Picture extends Model
     	->get();
     }
 
+    public function getAllPicturesFromPreviousMonth($beginMonth,$endMonth){
+        return DB::table('pictures')
+        ->where('created_at','>=',$beginMonth)
+        ->where('created_at','<',$endMonth)
+        ->orderBy('numberOfVotes', 'desc')
+        ->get();
+    }
+
     public function votes(){
     	return $this->hasMany('App\Vote','picture_id');
     }

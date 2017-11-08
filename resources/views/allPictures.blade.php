@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+	<div class="container">
 		<h1>Alle Inzendingen</h1>
 		@foreach($allPictures as $key => $picture)
 	        <div class="col-md-4 contestPicture">
@@ -18,4 +19,5 @@
 	            
 	        </div>
         @endforeach
+    </div>
 @endsection

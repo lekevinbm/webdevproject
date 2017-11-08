@@ -14,6 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         //
+        Commands\deleteTempPictures::class,
+        Commands\getWinnerForContest::class,
     ];
 
     /**
@@ -26,6 +28,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->command('do:deleteTempPicture')->daily();
+        $schedule->command('do:getWinnerForContest')->monthlyOn(1, '0:00');
     }
 
     /**

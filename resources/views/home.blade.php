@@ -21,13 +21,16 @@
 </div>
 <div class="container">
     <h4>Vorige Winnaars</h4>
-    <div class="col-md-4 contestPicture">
-    			<h5>November</h5>
-	            <img style="width: 90%" src="{{ asset('img/picturesOfParticipants/user-1-gSK0n.jpg') }}">
-	            <div class="pictureInfo">
-		            <p class="caption"></p>
-		            <p class="votes">Aantal stemmen: </p>
-	            </div>
-	        </div>
+    @foreach($allWinners as $key => $winner)
+	    <div class="col-md-4 contestPicture">
+	    			<h5>{{ $winner->month }}</h5>
+		            <img style="width: 90%" src="{{ asset('img/picturesOfParticipants/user-1-gSK0n.jpg') }}">
+		            <div class="pictureInfo">
+			            <p class="caption">{{ $winner->caption }}</p>
+			            <p class="participant">Van: {{ $winner->firstName }} {{ $winner->lastName }}</p>
+			            <p class="votes">Aantal stemmen: {{ $winner->numberOfVotes }} </p>
+		            </div>
+		</div>
+	@endforeach
 </div>
 @endsection

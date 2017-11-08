@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Picture;
 use App\Vote;
+use App\Winner;
 use App\Http\Controllers\Controller;
 use Validator;
 use Auth;
@@ -25,7 +26,48 @@ class MainController extends Controller
      * @return Response
      */
     public function index(){
-        return view('home');
+        $winner = new Winner;
+        $allWinners = $winner->getAllWinners();
+        return view('home',[
+            'allWinners' => $allWinners
+            ]);
+    }
+
+    public function test(){
+        $allFiles = File::allFiles('img/tempPictures');
+        foreach($allFiles as $key => $filePath){
+            $fileName = basename($filePath);
+            $fileNameArray = explode("-", $fileName);
+            $timestampFileAddedWithHour = $fileNameArray[0] + 3600;
+            $currentTime = Carbon::now()->timestamp;
+
+            if($currentTime > $timestampFileAddedWithHour){
+                unlink($filePath);
+                return "normaal verwijderd";
+            } else{
+                return "Uur is nog niet voorbij";
+            }
+        }
+        
+
+    }
+
+    public function test2(){
+        $currentDay = Carbon::today();
+        $currentDaySubbedWithMonth = Carbon::today()->submonth(1);
+        Carbon::setLocale('nl');
+        $previousMonth = $currentDaySubbedWithMonth->format('F');
+
+        $picture = new Picture;
+        $allPicturesFromPreviousMonth = $picture->getAllPicturesFromPreviousMonth($currentDaySubbedWithMonth,$currentDay);
+        $winningPicture_id = $allPicturesFromPreviousMonth->first()->picture_id;
+        
+        $winner = new Winner;
+        $winner->picture_id = $winningPicture_id;
+        $winner->month = $previousMonth;
+        $winner->save();
+
+        return $winner;
     }
 
     public function openAllPictures(){
@@ -47,10 +89,10 @@ class MainController extends Controller
     public function postNewParticipantPage1Data(Request $request){
 
         $validator = Validator::make($request->all(), [
-          'email' => 'required',
-          'image' => 'required',
-          'caption' => 'required',
-          'serialNumberOfGame' => 'required'
+          'email' => 'required|string|email|max:255',
+          'image' => 'required|image',
+          'caption' => 'required|string|max:255',
+          'serialNumberOfGame' => 'required|string|max:10'
         ]);
 
         if ($validator->passes()){            
@@ -120,9 +162,9 @@ class MainController extends Controller
             $hasUserAnAccount = True;
 
             $validator = Validator::make($request->all(), [
-              'streetAndNumber' => 'required',
-              'zipcode' => 'required',
-              'placeOfResidence' => 'required',
+              'streetAndNumber' => 'required|string|max:255',
+              'zipcode' => 'required|string|max:255',
+              'placeOfResidence' => 'required|string|max:255',
             ]);
 
         } else{
