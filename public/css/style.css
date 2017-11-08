@@ -8,13 +8,21 @@ body{
 	color: white;
 }
 
-#nav>a{
-	color: white;
+#nav a{
+	color: #fff;
+}
+
+#navdropdown a{
+	color: #000;
 }
 
 .contestPicture{
-	height: 65vh;
-	margin: 3% 0;
+	height: 65%;
+	margin: 5% 0;
+}
+
+.contestPicture img{
+	width: 90%;
 }
 
 #header-div{
@@ -60,8 +68,8 @@ h5{
     padding: 2% 15%;
     font-size: 1.5em;
 	font-weight: bold;
-	margin-left: 15%;
 	color: #ffcd00;
+	width: auto;
 }
 
 .button:hover{

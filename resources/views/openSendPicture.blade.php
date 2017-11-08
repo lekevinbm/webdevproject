@@ -11,11 +11,15 @@
         <p class="caption">{{$pictureToShow->caption}}</p>
         <h4>Van: {{$pictureToShow->firstName}} {{$pictureToShow->lastName}}</h5>
         <p class="votes">Aantal stemmen: {{$numberOfVotes}}</p>
+        @if($pictureToShow->created_at > $startOfCurrentMonth)
             @if ( $hasAlreadyVoted )
                  <a class="btn btn-danger" href="/deleteAVote/{{$pictureToShow->picture_id}}">Stemming ongedaan maken</a>
             @else
                 <a class="btn btn-primary" href="/voteForPicture/{{$pictureToShow->picture_id}}">Stemmen voor deze inzending</a>
             @endif
+        @else
+            <p>Ingezonden in {{ Carbon\Carbon::parse($pictureToShow->created_at)->formatLocalized('%B') }}</p>
+        @endif
         </div>
     </div>
 @endsection

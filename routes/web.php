@@ -36,6 +36,8 @@ Route::group(['middleware' => 'admin'], function () {
 	Route::get('/deleteAUser/{id}','MainController@deleteAUser');
 	Route::get('/setUserAsAdmin/{id}','MainController@setUserAsAdmin');
 	Route::get('/setAdminAsNormalUser/{id}','MainController@setAdminAsNormalUser');
+	Route::get('/exportAllPictures/','MainController@exportAllPictures');
+	
 	
 	
 });

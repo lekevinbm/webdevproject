@@ -45,6 +45,17 @@ class Picture extends Model
         ->get();
     }
 
+    public function getAllPicturesFromParticipantFromThisMonth($user_id,$beginMonth,$endMonth)
+    {
+        return DB::table('pictures')
+        ->join('users','users.id','=','pictures.participent_id')
+        ->where('participent_id','=',$user_id)
+        ->where('pictures.created_at','>=',$beginMonth)
+        ->where('pictures.created_at','<',$endMonth)
+        ->select('pictures.*','users.firstName','users.lastName')
+        ->get();
+    }
+
     public function votes(){
     	return $this->hasMany('App\Vote','picture_id');
     }

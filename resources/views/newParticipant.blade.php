@@ -3,6 +3,11 @@
 @section('content')
         <div class="flex-center position-ref full-height">
                 <h4>Een foto inzenden</h4>
+                @if(isset($alreadyParticipatedMessage))
+                    <span class="help-block">
+                        <strong>{{ $alreadyParticipatedMessage }}</strong>
+                    </span>
+                @endif
                 <div class="panel-body">
                     <form class="form-horizontal" method="POST" enctype="multipart/form-data" action="/postNewParticipantPage1Data" >
                         {{ csrf_field() }}

@@ -52,9 +52,10 @@
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     {{ Auth::user()->firstName }} {{ Auth::user()->lastName }} <span class="caret"></span>
                                 </a>
-                                <ul class="dropdown-menu" role="menu">
+                                <ul id="navdropdown" class="dropdown-menu" role="menu">
                                     @if(Auth::user()->isAdmin)
                                         <li><a class="btn" href="/allParticipants">Gebruikers beheren</a></li>                                </li>
+                                        <!-- <li><a class="btn" href="/exportAllPictures">Exporteer alle deelnemers/a></li>                                </li> -->
                                     @endif
                                     @if(Auth::user()->isParticipant)
                                         <li><a class="btn" href="/openPicturesParticipent">Mijn inzendingen</a></li>                                </li>

@@ -33,52 +33,23 @@ class MainController extends Controller
             ]);
     }
 
-    public function test(){
-        $allFiles = File::allFiles('img/tempPictures');
-        foreach($allFiles as $key => $filePath){
-            $fileName = basename($filePath);
-            $fileNameArray = explode("-", $fileName);
-            $timestampFileAddedWithHour = $fileNameArray[0] + 3600;
-            $currentTime = Carbon::now()->timestamp;
-
-            if($currentTime > $timestampFileAddedWithHour){
-                unlink($filePath);
-                return "normaal verwijderd";
-            } else{
-                return "Uur is nog niet voorbij";
-            }
-        }
-        
-
-    }
-
-    public function test2(){
-        $currentDay = Carbon::today();
-        $currentDaySubbedWithMonth = Carbon::today()->submonth(1);
-        Carbon::setLocale('nl');
-        $previousMonth = $currentDaySubbedWithMonth->format('F');
-
-        $picture = new Picture;
-        $allPicturesFromPreviousMonth = $picture->getAllPicturesFromPreviousMonth($currentDaySubbedWithMonth,$currentDay);
-        $winningPicture_id = $allPicturesFromPreviousMonth->first()->picture_id;
-        
-        $winner = new Winner;
-        $winner->picture_id = $winningPicture_id;
-        $winner->month = $previousMonth;
-        $winner->save();
-
-        return $winner;
-    }
-
     public function openAllPictures(){
 
+        $currentTime = Carbon::now();
+        $startOfCurrentMonth = $currentTime->startOfMonth();
+        $currentTime = Carbon::now();
+        $endOfCurrentMonth = $currentTime->endOfMonth();
+
         $allPictures = Picture::join('users','users.id','=','pictures.participent_id')
+        ->where('pictures.created_at','>=',$startOfCurrentMonth)
+        ->where('pictures.created_at','<=',$endOfCurrentMonth)
         ->select('pictures.*','users.firstName','users.lastName')
         ->get();
 
         return view('allPictures',[
             'allPictures' => $allPictures,
             ]);
+
     }
 
     public function openNewParticipant()
@@ -133,8 +104,23 @@ class MainController extends Controller
         $user = new User;
         if(Auth::check()) {
             if(Auth::user()->isParticipant){
-                $picture_id = $this->sendPictureAndGiveId($participantData, Auth::id());
-                return redirect('/openSendPicture/'.$picture_id);
+                $picture = new Picture;
+
+                $currentTime = Carbon::now();
+                $startOfCurrentMonth = $currentTime->startOfMonth();
+                $currentTime = Carbon::now();
+                $endOfCurrentMonth = $currentTime->endOfMonth();
+                $allPicturesFromMonth = $picture->getAllPicturesFromParticipantFromThisMonth(Auth::id(),$startOfCurrentMonth,$endOfCurrentMonth);
+
+                if($allPicturesFromMonth->isEmpty()){
+                    $picture_id = $this->sendPictureAndGiveId($participantData, Auth::id());
+                    return redirect('/openSendPicture/'.$picture_id);
+                }else{
+                    return view('newParticipant',
+                        [
+                        'alreadyParticipatedMessage' => 'U heeft deze maand al eens deelgenomen. U kan volgende maand opnieuw proberen.'
+                        ]);
+                }                
             } else{
                 return view('newParticipantPage2');
             }
@@ -235,11 +221,15 @@ class MainController extends Controller
 
         $numberOfVotes = $vote->countNumberOfVotes($picture_id);
 
+        $currentTime = Carbon::now();
+        $startOfCurrentMonth = $currentTime->startOfMonth();
+
         return view('openSendPicture',
             [
             'pictureToShow' => $pictureToShow,
             'hasAlreadyVoted' => $hasAlreadyVoted,
-            'numberOfVotes' => $numberOfVotes,
+            'numberOfVotes' => $numberOfVotes,            
+            'startOfCurrentMonth' => $startOfCurrentMonth,
             ]);
     }
 
@@ -272,11 +262,13 @@ class MainController extends Controller
         ->select('pictures.*','users.firstName','users.lastName')
         ->get();
 
-
+        $currentTime = Carbon::now();
+        $startOfCurrentMonth = $currentTime->startOfMonth();
 
         return view('openPictureParticipent',
             [
             'allPictures' => $allPictures,
+            'startOfCurrentMonth' => $startOfCurrentMonth,
             ]);
     }
 
@@ -285,19 +277,28 @@ class MainController extends Controller
         $vote = new Vote;
         $picture = new Picture;
 
-        $voteToCheck = $vote->getVote($picture_id, Auth::id());
-        
-        if($voteToCheck->isEmpty()){
-            $vote->user_id = Auth::id();
-            $vote->picture_id = $picture_id;
-            $vote->wasVoted = True;
-            $vote->save();
+        $pictureToCheck = $picture->getAPicture($picture_id)->first();
+        $currentTime = Carbon::now();
+        $startOfCurrentMonth = $currentTime->startOfMonth();
+        $currentTime = Carbon::now();
+        $endOfCurrentMonth = $currentTime->endOfMonth();
 
-            $pictureToEdit = $picture::find($picture_id);
-            $originalNumberOfVotes = $pictureToEdit->numberOfVotes;
-            $pictureToEdit->numberOfVotes = $originalNumberOfVotes + 1;
-            $pictureToEdit->save();
-        }
+        if ($pictureToCheck->created_at >= $startOfCurrentMonth && $pictureToCheck->created_at <= $endOfCurrentMonth){
+            $voteToCheck = $vote->getVote($picture_id, Auth::id());
+        
+            if($voteToCheck->isEmpty()){
+                $vote->user_id = Auth::id();
+                $vote->picture_id = $picture_id;
+                $vote->wasVoted = True;
+                $vote->save();
+
+                $pictureToEdit = $picture::find($picture_id);
+                $originalNumberOfVotes = $pictureToEdit->numberOfVotes;
+                $pictureToEdit->numberOfVotes = $originalNumberOfVotes + 1;
+                $pictureToEdit->save();
+            }
+
+        }      
 
         return Redirect::back();
     }
@@ -308,15 +309,25 @@ class MainController extends Controller
         $picture = new Picture;
         $user_id = Auth::id();
 
+        $pictureToCheck = $picture->getAPicture($picture_id)->first();
+        $currentTime = Carbon::now();
+        $startOfCurrentMonth = $currentTime->startOfMonth();
+        $currentTime = Carbon::now();
+        $endOfCurrentMonth = $currentTime->endOfMonth();
+
+        //Checking if the picture is in the running for this month
+        if ($pictureToCheck->created_at >= $startOfCurrentMonth && $pictureToCheck->created_at <= $endOfCurrentMonth){
+
         $voteToCheck = $vote->getVote($picture_id, Auth::id());
 
-        if(!$voteToCheck->isEmpty()){
-            $vote->deleteAVote($picture_id, $user_id);
+            if(!$voteToCheck->isEmpty()){
+                $vote->deleteAVote($picture_id, $user_id);
 
-            $pictureToEdit = $picture::find($picture_id);
-            $originalNumberOfVotes = $pictureToEdit->numberOfVotes;
-            $pictureToEdit->numberOfVotes = $originalNumberOfVotes - 1;
-            $pictureToEdit->save();
+                $pictureToEdit = $picture::find($picture_id);
+                $originalNumberOfVotes = $pictureToEdit->numberOfVotes;
+                $pictureToEdit->numberOfVotes = $originalNumberOfVotes - 1;
+                $pictureToEdit->save();
+            }
         }   
         
         return Redirect::back();

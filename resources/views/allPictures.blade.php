@@ -5,7 +5,7 @@
 		<h1>Alle Inzendingen</h1>
 		@foreach($allPictures as $key => $picture)
 	        <div class="col-md-4 contestPicture">
-	            <a href="/openSendPicture/{{$picture->picture_id}}"><img style="width: 90%" src="{{ $picture->path }}"></a>
+	            <a href="/openSendPicture/{{$picture->picture_id}}"><img src="{{ $picture->path }}"></a>
 	            <div class="pictureInfo">
 	            	<p class="caption">{{ $picture->caption }}</p>
 		            <p class="participant">Van {{ $picture->firstName }} {{ $picture->lastName }}</p>
